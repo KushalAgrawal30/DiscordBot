@@ -16,6 +16,7 @@ DISCORD_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 reminder = {}
@@ -142,12 +143,20 @@ async def on_message(message):
     await bot.process_commands(message)
     if message.content.startswith('!'):
         return
-    response = genai_client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=message.content
-        )
-    await message.channel.send(f'{response.text}')
+    if(message.content):
+        response = genai_client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=message.content
+            )
+        await message.channel.send(f'{response.text}')
 
+
+@bot.event
+async def on_member_join(member):
+    channel = bot.get_channel(1346831884994478082)
+
+    embed=discord.Embed(title=f"🌟 Welcome, {member.name}, to **{member.guild.name}**! 🎉\nWe're so excited to have you here! ")
+    await channel.send(embed=embed)
 
 
 bot.run(DISCORD_TOKEN)
