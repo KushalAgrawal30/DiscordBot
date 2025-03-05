@@ -21,6 +21,32 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 reminder = {}
 
+welcome_message = (
+    "📌 **Reminder Commands**\n\n"
+    "✅ **Set a Reminder:** Use `!remind YYYY-MM-DD HH:MM <message>`\n"
+    "Example:\n"
+    "\n"
+    "!remind 2025-03-06 15:30 Take a break!\n"
+    "\n"
+    "The bot will notify you at the specified time.\n\n"
+    
+    "🗑 **Delete a Reminder:** Use `!deletereminder YYYY-MM-DD HH:MM`\n"
+    "Example:\n"
+    "\n"
+    "!deletereminder 2025-03-06 15:30\n"
+    "\n"
+    
+    "✏ **Modify a Reminder:** Use `!modifyreminder YYYY-MM-DD HH:MM <new message>`\n"
+    "Example:\n"
+    "\n"
+    "!modifyreminder 2025-03-06 15:30 Meeting moved to 16:00.\n"
+    "\n"
+    
+    "⚠ **Use the correct format to avoid errors!** If you enter an invalid command, the bot will guide you. Happy reminding! ⏰"
+)
+
+
+
 @bot.event
 async def on_ready():
     print(f'Logged on as {bot.user}')
@@ -155,7 +181,8 @@ async def on_message(message):
 async def on_member_join(member):
     channel = bot.get_channel(1346831884994478082)
 
-    embed=discord.Embed(title=f"🌟 Welcome, {member.name}, to **{member.guild.name}**! 🎉\nWe're so excited to have you here! ")
+    embed=discord.Embed(title=f"🌟 Welcome, {member.name}, to **{member.guild.name}**!",
+                        description=f"🎉\nWe're so excited to have you here!\n{welcome_message}")
     await channel.send(embed=embed)
 
 
