@@ -42,6 +42,8 @@ welcome_message = (
     "\n"
     
     "⚠ **Use the correct format to avoid errors!** If you enter an invalid command, the bot will guide you. Happy reminding! ⏰"
+    "\n\n"
+    "Create a poll:\nUse: `!poll Question | Option1 | Option2 | ..."
 )
 
 
@@ -57,9 +59,9 @@ async def reminder_check():
     while True:
         now =  datetime.now()
         reminder_outdated = []
-        for reminder_time , (channel, reminder_text) in reminder.items():
+        for reminder_time , (channel, author, reminder_text) in reminder.items():
             if now>= reminder_time:
-                await channel.send(f'⏰ Reminder!!: {reminder_text}')
+                await channel.send(f'⏰ Reminder!! for {author}: {reminder_text}')
                 reminder_outdated.append(reminder_time)
         for reminder_time in reminder_outdated:
             del reminder[reminder_time]
@@ -84,8 +86,8 @@ async def remind(ctx, *args):
         if reminder_time <= now:
             await ctx.send("Reminder time must be in the future!")
             return
-        reminder[reminder_time] = (ctx.channel, message)
-        await ctx.send(f"Reminder set for {time}: {message}")
+        reminder[reminder_time] = (ctx.channel, ctx.author.name , message)
+        await ctx.send(f"{ctx.author.name} Reminder set for {time}: {message}")
     except ValueError:
         await ctx.send("Invalid format! Use: `!remind YYYY-MM-DD HH:MM <message>`")
         
@@ -102,8 +104,8 @@ async def updatereminder(ctx, *args):
     try:
         reminder_time = datetime.strptime(time, "%Y-%m-%d %H:%M")
         if reminder_time in reminder:
-            reminder[reminder_time] = (ctx.channel, message)
-            await ctx.send(f'Reminder updated for time: {reminder_time}\nReminder message: {message}')
+            reminder[reminder_time] = (ctx.channel,ctx.author.name, message)
+            await ctx.send(f'{ctx.author.name} Reminder updated for time: {reminder_time}\nReminder message: {message}')
         else:
             await ctx.send(f'No reminder found for this time.')
     except ValueError:
@@ -123,7 +125,7 @@ async def deletereminder(ctx, *args):
         reminder_time = datetime.strptime(time, "%Y-%m-%d %H:%M")
         if reminder_time in reminder:
             del reminder[reminder_time]
-            await ctx.send(f'Reminder deleted for {reminder_time}')
+            await ctx.send(f'Reminder deleted for {ctx.author.name}: {reminder_time}')
         else:
             await ctx.send(f'No reminder found at this time')
     except ValueError:
