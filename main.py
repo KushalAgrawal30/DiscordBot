@@ -162,7 +162,6 @@ async def poll(ctx, *, poll_input: str):
 
 @bot.event
 async def on_message(message):
-    print(message.content)
     if(message.author == bot.user):
         return
     await bot.process_commands(message)
@@ -173,7 +172,11 @@ async def on_message(message):
             model="gemini-2.0-flash",
             contents=message.content
             )
-        await message.channel.send(f'{response.text}')
+        reply = response.text
+        if reply:
+            replys = [reply[i:i+2000] for i in range(0, len(reply), 2000)]
+            for chunk in replys:
+                await message.channel.send(chunk)
 
 
 @bot.event
