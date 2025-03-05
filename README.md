@@ -11,7 +11,7 @@ Polls: Create and manage polls.
 Welcome Messages: Greets new members when they join the server.
 
 
-
+<br>
 Create a .env file:
 
 DISCORD_TOKEN=your-bot-token
