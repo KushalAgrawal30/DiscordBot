@@ -7,12 +7,11 @@ import asyncio
 import os
 from dotenv import load_dotenv
 
-
-genai_client = genai.Client(api_key=GENAI_API_KEY)
-
 load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GENAI_API_KEY = os.getenv("GENAI_API_KEY")
+
+genai_client = genai.Client(api_key=GENAI_API_KEY)
 
 intents = discord.Intents.default()
 intents.message_content = True
