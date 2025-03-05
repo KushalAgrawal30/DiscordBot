@@ -13,4 +13,5 @@ Welcome Messages: Greets new members when they join the server.
 
 
 Create a .env file:
+
 DISCORD_TOKEN=your-bot-token
